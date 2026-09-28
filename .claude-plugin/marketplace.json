@@ -1,11 +1,11 @@
 {
-  "name": "ucsandman",
+  "name": "deniserenafrank-max",
   "owner": {
-    "name": "Wes Sander",
-    "url": "https://github.com/ucsandman"
+    "name": "Denise Frank",
+    "url": "https://github.com/deniserenafrank-max"
   },
   "metadata": {
-    "description": "Plugins by ucsandman."
+    "description": "Fork of marketing-studio by ucsandman, maintained by Denise Frank."
   },
   "plugins": [
     {
@@ -18,7 +18,7 @@
       },
       "source": "./",
       "category": "productivity",
-      "homepage": "https://github.com/ucsandman/marketing-studio",
+      "homepage": "https://github.com/deniserenafrank-max/marketing-studio",
       "tags": [
         "marketing",
         "video",
