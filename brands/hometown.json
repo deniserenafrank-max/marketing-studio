@@ -1,0 +1,47 @@
+{
+  "id": "hometown",
+  "name": "Hometown Realtors of Texas",
+  "speechHint": "Hometown Realtors of Texas",
+  "tagline": "Realtors of Texas",
+  "url": "hometownrealtorsoftexas.com",
+  "colors": {
+    "bg": "#072018",
+    "surface": "#0d2a20",
+    "surface2": "#133a2c",
+    "line": "#1f4a39",
+    "ink": "#f4ebdd",
+    "ink2": "#c8c1b0",
+    "ink3": "#9c9a8a",
+    "brand": "#d4a843",
+    "profit": "#e8c874",
+    "safe": "#4cc38a",
+    "loss": "#e36a55",
+    "info": "#7fb2d0",
+    "rare": "#e08a4a"
+  },
+  "fonts": {
+    "display": "DM Serif Display",
+    "body": "DM Sans",
+    "mono": "JetBrains Mono"
+  },
+  "textAccent": "brand",
+  "grade": {
+    "grain": 0.08,
+    "grainSize": 0.8,
+    "halation": 0.1,
+    "vignette": 0.15,
+    "bloom": 0.08,
+    "aberration": 0,
+    "letterbox": 0
+  },
+  "motion": {
+    "tempo": 1.0,
+    "exuberance": 0.3,
+    "stagger": 0.5,
+    "overshoot": 0.2,
+    "parallax": 0.2,
+    "settle": 0.3,
+    "textReveal": "spring"
+  },
+  "voice": "Hometown Realtors of Texas, a Houston-north real estate brokerage (Montgomery, Magnolia, Conroe, Spring and nearby). Warm, local, plain-spoken, a little playful; helpful first, never pushy. Deep forest green #072018 is the ground; cream #f4ebdd is the text color, not pure white. Warm gold #d4a843 is the accent: headlines, highlights, calls to action. Light gold #e8c874 carries prices and big numbers. Green #4cc38a means good news only (new listing, price improved). Coral #e36a55 means caution only (price drop, deadline), never decoration. Soft blue #7fb2d0 marks tips and info. Burnt orange #e08a4a marks hot or just-listed items. The logo appears in white linework with its red heart kept red; never recolor the heart. Name is 'Hometown Realtors of Texas'; tagline 'Realtors of Texas'. No hype, no em dashes."
+}
