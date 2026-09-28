@@ -10,6 +10,8 @@ import {loadFont as loadSourceSans3} from '@remotion/google-fonts/SourceSans3';
 import {loadFont as loadSourceSerif4} from '@remotion/google-fonts/SourceSerif4';
 import {loadFont as loadIBMPlexSans} from '@remotion/google-fonts/IBMPlexSans';
 import {loadFont as loadIBMPlexMono} from '@remotion/google-fonts/IBMPlexMono';
+import {loadFont as loadDMSerifDisplay} from '@remotion/google-fonts/DMSerifDisplay';
+import {loadFont as loadDMSans} from '@remotion/google-fonts/DMSans';
 import type {Brand} from './brand';
 
 // Load once at module scope; Remotion delays render until fonts resolve.
@@ -51,6 +53,16 @@ const families: Record<string, string> = {
     subsets: ['latin'],
   }).fontFamily,
   'IBM Plex Mono': loadIBMPlexMono('normal', {weights: ['400', '600'], subsets: ['latin']})
+    .fontFamily,
+  // Hometown display face. DM Serif Display ships ONE weight (400) on Google Fonts, so
+  // the templates' `fontWeight: 800` display sites have no real bold face to match and
+  // the browser synthesizes a faux bold. Check the first gallery still; if the faux
+  // bold looks smeared, the fix is per-template weight, not loading a face that
+  // does not exist.
+  'DM Serif Display': loadDMSerifDisplay('normal', {weights: ['400'], subsets: ['latin']})
+    .fontFamily,
+  // Hometown body/UI. 700 kept so fallbacks from 800 land on 700, not 600.
+  'DM Sans': loadDMSans('normal', {weights: ['400', '600', '700'], subsets: ['latin']})
     .fontFamily,
 };
 
