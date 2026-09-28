@@ -10,6 +10,7 @@ import {PracticalSystemsMark} from './PracticalSystemsMark';
 import {PostflopMark} from './PostflopMark';
 import {OffLocalhostMark} from './OffLocalhostMark';
 import {TrucksideMark} from './TrucksideMark';
+import {HometownMark} from './HometownMark';
 
 export type MarkComponent = React.FC<{size: number; color: string}>;
 
@@ -25,6 +26,7 @@ const registry: Record<string, MarkComponent> = {
   postflop: PostflopMark,
   offlocalhost: OffLocalhostMark,
   truckside: TrucksideMark,
+  hometown: HometownMark,
 };
 
 export const getMark = (id: string): MarkComponent => {
