@@ -36,11 +36,12 @@
         "email": "hello@theaicareerlab.com"
       },
       "source": {
-        "source": "github",
-        "repo": "deniserenafrank-max/real-estate"
+        "source": "git-subdir",
+        "url": "alexclowe/awesome-claude-cowork-plugins",
+        "path": "real-estate"
       },
       "category": "real-estate",
-      "homepage": "https://github.com/deniserenafrank-max/real-estate",
+      "homepage": "https://github.com/alexclowe/awesome-claude-cowork-plugins/tree/main/real-estate",
       "tags": [
         "real-estate",
         "listings",
