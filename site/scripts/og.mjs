@@ -7,7 +7,7 @@ const page = await browser.newPage({ ignoreHTTPSErrors: true, viewport: { width:
 await page.goto(url, { waitUntil: 'networkidle' });
 await page.waitForTimeout(2500);
 await page.addStyleTag({ content: '.hud-ring,.hud-skip,.hud-toggles,.scroll-cue,.hero-hurry{display:none!important}' });
-await page.screenshot({ path: new URL('../public/og.png', import.meta.url).pathname });
+await page.screenshot({ path: new URL('../public/og.jpg', import.meta.url).pathname, type: 'jpeg', quality: 82 });
 await browser.close();
 await close();
-console.log('wrote public/og.png');
+console.log('wrote public/og.jpg');

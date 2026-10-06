@@ -1,18 +1,5 @@
 import { defineConfig } from 'vite';
-import { renderAll } from './src/content/render-static.js';
-
-// Injects the readable no-JS version of every room (rendered from src/content/copy.js) into
-// index.html wherever <!--@room:id--> appears. One copy source feeds both the static document
-// and the interactive rooms.
-function staticRooms() {
-  return {
-    name: 'static-rooms',
-    transformIndexHtml(html) {
-      const parts = renderAll();
-      return html.replace(/<!--@room:([a-z-]+)-->/g, (m, id) => parts[id] ?? m);
-    },
-  };
-}
+import { staticRooms } from './src/content/static-rooms-plugin.js';
 
 // Relative base so the built site works from any folder (GitHub Pages subpath, a private
 // artifact preview, or the root of hometownrealtorsoftexas.com).

@@ -233,10 +233,12 @@ export function createPorchScene(canvas, { reduced = false, lowPower = false } =
   function applyCamera() {
     const p = state.reduced ? { x: 0, y: 0 } : state.pointerSmooth;
     const t = state.scroll;
-    camera.position.x = camBase.x + p.x * 0.4 + t * 0.5;
-    camera.position.y = camBase.y + p.y * 0.2 - t * 0.35;
+    // Portrait screens: look further down so the lit house rises above the headline.
+    const portrait = camera.aspect < 0.8 ? 1 : camera.aspect < 1.1 ? 0.5 : 0;
+    camera.position.x = camBase.x + p.x * 0.4 + t * 0.5 - portrait * 0.3;
+    camera.position.y = camBase.y + p.y * 0.2 - t * 0.35 - portrait * 0.4;
     camera.position.z = camBase.z - t * 1.9;
-    camera.lookAt(camera.position.x * 0.5 + 0.5, camBase.y - 0.45 - t * 0.5, -12);
+    camera.lookAt(camera.position.x * 0.5 + 0.5 + portrait * 0.2, camBase.y - 0.45 - t * 0.5 - portrait * 1.1, -12);
     glow.material.opacity = 0.55 + t * 0.3;
     core.material.opacity = 0.95;
   }
