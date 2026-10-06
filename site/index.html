@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Unusual Open House</title>
+<meta name="description" content="Denise Frank, Broker/Owner of Hometown Realtors of Texas LLC, Conroe TX. A six-minute night walk through her open house: every room teaches one real estate lesson and hands you one key. Call (832) 928-3019.">
+<meta name="theme-color" content="#072018">
+<meta property="og:title" content="Denise Frank: The Unusual Open House">
+<meta property="og:description" content="Not your usual open house. Every room teaches one real estate lesson and hands you one key. Houston-north, Montgomery County and beyond.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="brand/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="./src/styles/tokens.css">
+<link rel="stylesheet" href="./src/styles/base.css">
+<link rel="stylesheet" href="./src/styles/components.css">
+<link rel="stylesheet" href="./src/styles/rooms.css">
+<script>document.documentElement.classList.remove('no-js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<a class="skip-link" href="#closing-table">Skip to the closing table</a>
+
+<header class="site-header">
+  <a class="site-logo" href="#porch" aria-label="The Unusual Open House, home"><img src="brand/hometown-mark.svg" alt="" width="40" height="40"><span class="site-logo-name">Denise Frank</span></a>
+</header>
+
+<nav class="hud" aria-label="Keyring" data-hud>
+  <button class="hud-ring" type="button" data-hud-open aria-haspopup="dialog" aria-expanded="false">
+    <span class="hud-keys" data-hud-keys aria-hidden="true"></span>
+    <span class="hud-count num" data-hud-count>Keys 0 of 7</span><span class="hud-count-short num" data-hud-count-short aria-hidden="true">0/7</span>
+  </button>
+  <a class="btn btn-primary hud-skip" href="#closing-table" data-skip><span class="hud-skip-long">Skip to the closing table</span><span class="hud-skip-short" aria-hidden="true">Skip to closing</span></a>
+  <div class="hud-toggles">
+    <button class="hud-toggle" type="button" data-toggle-sound aria-pressed="false"><span class="ico-slot" data-ico-sound></span><span class="hud-toggle-label" data-sound-label>Sound off</span></button>
+    <button class="hud-toggle" type="button" data-toggle-motion aria-pressed="false"><span class="ico-slot" data-ico-motion></span><span class="hud-toggle-label" data-motion-label>Calm mode off</span></button>
+  </div>
+</nav>
+
+<main id="main" class="journey">
+  <section class="room room-porch" id="porch" data-chapter="porch" aria-labelledby="porch-title">
+    <!--@room:porch-->
+  </section>
+  <section class="room room-hall" id="front-hall" data-chapter="front-hall" aria-labelledby="front-hall-title">
+    <div class="container room-inner">
+      <!--@room:front-hall-->
+      <div class="room-door" data-door></div>
+    </div>
+  </section>
+  <section class="room room-lab" id="lab" data-chapter="lab" aria-labelledby="lab-title">
+    <div class="container room-inner">
+      <!--@room:lab-->
+      <div class="room-door" data-door></div>
+    </div>
+  </section>
+  <section class="room room-evidence" id="evidence-board" data-chapter="evidence-board" aria-labelledby="evidence-board-title">
+    <div class="container room-inner">
+      <!--@room:evidence-board-->
+      <div class="room-door" data-door></div>
+    </div>
+  </section>
+  <section class="room room-library" id="library" data-chapter="library" aria-labelledby="library-title">
+    <div class="container room-inner">
+      <!--@room:library-->
+      <div class="room-door" data-door></div>
+    </div>
+  </section>
+  <section class="room room-map" id="map-room" data-chapter="map-room" aria-labelledby="map-room-title">
+    <div class="container room-inner">
+      <!--@room:map-room-->
+      <div class="room-door" data-door></div>
+    </div>
+  </section>
+  <section class="room room-backyard" id="backyard" data-chapter="backyard" aria-labelledby="backyard-title">
+    <div class="container room-inner">
+      <!--@room:backyard-->
+      <div class="room-door" data-door></div>
+    </div>
+  </section>
+  <section class="room room-closing" id="closing-table" data-chapter="closing-table" aria-labelledby="closing-table-title">
+    <div class="container room-inner">
+      <!--@room:closing-table-->
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <!--@room:footer-->
+</footer>
+
+<div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="toasts" data-toasts aria-hidden="true"></div>
+<div class="grade" aria-hidden="true"></div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

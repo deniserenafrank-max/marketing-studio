@@ -1,0 +1,10 @@
+import { launch } from './browser.mjs';
+import { readFileSync } from 'node:fs';
+const out = process.argv[2] || 'logo.png';
+const svg = readFileSync(new URL('../public/brand/hometown-mark.svg', import.meta.url), 'utf8');
+const browser = await launch();
+const page = await browser.newPage({ viewport: { width: 640, height: 640 } });
+await page.setContent(`<body style="margin:0;background:#072018;display:grid;place-items:center;height:640px"><div style="width:480px;color:#f4ebdd">${svg}</div></body>`);
+await page.screenshot({ path: out });
+await browser.close();
+console.log('wrote', out);

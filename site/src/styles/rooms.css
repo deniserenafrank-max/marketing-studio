@@ -1,0 +1,58 @@
+/* Room layouts: each room is a lit island in one dark. The Porch is the only pinned scene. */
+
+.journey { position: relative; z-index: var(--z-page); }
+.room { position: relative; }
+.room-inner { position: relative; padding-block: clamp(5rem, 12vw, 9rem); }
+.room-inner > .eyebrow { margin-bottom: 12px; }
+.room-inner > .room-title { margin-bottom: 1.25rem; }
+.room-inner > .room-intro { margin-bottom: 1rem; }
+.room-inner > .instruction { margin-top: 1.25rem; }
+
+/* Lamp: a warm glow that comes on when the room enters the viewport. */
+.room:not(.room-porch)::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(60% 50% at var(--lamp-x, 70%) var(--lamp-y, 20%), rgb(var(--c-brand-rgb) / 0.11), transparent 70%);
+  opacity: 0; transition: opacity var(--t-slow) var(--ease-out);
+}
+.room.is-lit::before { opacity: 1; }
+.room-hall { --lamp-x: 75%; --lamp-y: 25%; }
+.room-lab { --lamp-x: 30%; --lamp-y: 20%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
+.room-evidence { --lamp-x: 50%; --lamp-y: 15%; }
+.room-library { --lamp-x: 80%; --lamp-y: 30%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
+.room-map { --lamp-x: 25%; --lamp-y: 30%; }
+.room-backyard { --lamp-x: 70%; --lamp-y: 20%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
+.room-closing { --lamp-x: 50%; --lamp-y: 35%; }
+.room-closing .room-inner { padding-bottom: clamp(3rem, 6vw, 5rem); }
+
+/* Porch: 100svh sticky scene plus extra scroll that drives the dolly. */
+.room-porch { height: 100svh; min-height: 640px; }
+html:not(.reduced-motion) .room-porch { height: 220svh; }
+.porch-scene { position: sticky; top: 0; height: 100svh; min-height: 640px; overflow: hidden; background: var(--sky); z-index: 0; }
+.porch-static { position: absolute; inset: 0; width: 100%; height: 100%; }
+.porch-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.porch-canvas[hidden] { display: none; }
+.porch-scene.has-webgl .porch-static { opacity: 0; transition: opacity 600ms var(--ease-out); }
+.porch-copy {
+  position: absolute; left: 0; right: 0; bottom: clamp(56px, 10vh, 120px); z-index: 2;
+  display: grid; gap: 18px; pointer-events: none;
+}
+html:not(.reduced-motion) .room-porch .porch-copy { position: sticky; top: 0; height: 100svh; min-height: 640px; margin-top: -100svh; bottom: auto; align-content: end; padding-bottom: clamp(56px, 10vh, 120px); }
+.porch-copy > * { pointer-events: auto; }
+.porch-eyebrow { color: var(--c-ink2); }
+.hero-title { max-width: 14ch; text-shadow: 0 2px 24px rgb(var(--c-bg-rgb) / 0.8); }
+.hero-title em { text-shadow: 0 0 24px rgb(var(--c-profit-rgb) / 0.18), 0 2px 24px rgb(var(--c-bg-rgb) / 0.8); }
+.hero-sub { max-width: 46ch; text-shadow: 0 1px 12px rgb(var(--c-bg-rgb) / 0.9); }
+.hero-actions { display: grid; gap: 14px; justify-items: start; }
+.btn-hero { min-height: 56px; padding: 0 28px; font-size: 1.05rem; }
+.hero-hurry { font-size: var(--fs-small); color: var(--c-ink2); text-shadow: 0 1px 12px rgb(var(--c-bg-rgb) / 0.9); }
+.hero-hurry a { color: var(--c-ink); }
+.porch-fallback-note { position: absolute; left: var(--gutter); top: calc(72px + env(safe-area-inset-top, 0px)); font-family: var(--font-mono); font-size: var(--fs-label); color: var(--c-ink2); z-index: 2; max-width: 40ch; }
+.scroll-cue { position: absolute; right: var(--gutter); bottom: clamp(24px, 5vh, 56px); z-index: 2; font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-ink2); display: flex; align-items: center; gap: 8px; }
+@media (max-width: 767px) { .scroll-cue { display: none; } .porch-copy { bottom: 110px; } }
+.porch-scene.is-knocked .porch-static { filter: brightness(1.15); }
+
+/* Phone-width tightening */
+@media (max-width: 480px) {
+  .room-inner { padding-block: 4rem; }
+  .hero-title { font-size: clamp(2.5rem, 12vw, 3.2rem); }
+}
