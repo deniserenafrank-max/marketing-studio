@@ -17,7 +17,7 @@
 .hud-ring {
   order: 2; display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px 0 10px;
   border-radius: var(--r-pill); border: 1px solid var(--ink-40);
-  background: var(--bg-80); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  background: var(--bg-92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   color: var(--c-ink); transition: border-color var(--t-fast), box-shadow var(--t-fast);
 }
 .hud-ring:hover { border-color: var(--c-brand); }
@@ -33,12 +33,12 @@
 .hud-toggles { order: 3; position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: var(--z-hud); display: flex; gap: 8px; }
 .hud-toggle {
   display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px;
-  border-radius: var(--r-pill); border: 1px solid var(--ink-40); background: var(--bg-80);
+  border-radius: var(--r-pill); border: 1px solid var(--ink-40); background: var(--bg-92);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--c-ink2);
   transition: color var(--t-fast), border-color var(--t-fast);
 }
 .hud-toggle:hover { color: var(--c-ink); border-color: var(--c-ink3); }
-.hud-toggle[aria-pressed="true"] { color: var(--c-brand); border-color: var(--gold-32); }
+.hud-toggle[aria-pressed="true"] { color: var(--c-profit); border-color: var(--gold-32); }
 .hud-toggle .ico-slot { display: inline-flex; width: 20px; height: 20px; }
 .hud-toggle-label { font-size: var(--fs-small); }
 @media (max-width: 767px) {
