@@ -44,9 +44,16 @@ export function initBackyard() {
       btn.setAttribute('aria-pressed', work ? 'true' : 'false');
       btn.setAttribute('aria-label', `${p.name}, ${PET_SIDES[side].toLowerCase()}. Press to see ${PET_SIDES[work ? 'real' : 'work'].toLowerCase()}.`);
       portrait.innerHTML = petPortrait(p.id, side);
+      missing = false;
+      img.hidden = false;
+      portrait.hidden = true;
       img.src = work ? p.img.work : p.img.real;
       img.alt = work ? p.altWork : p.altReal;
-      if (!missing) img.hidden = false;
+      if (img.complete && img.naturalWidth === 0) {
+        missing = true;
+        img.hidden = true;
+        portrait.hidden = false;
+      }
       sideLabel.textContent = PET_SIDES[side];
       plaque.hidden = !work;
       line.textContent = work ? p.advice : p.real;
@@ -62,5 +69,9 @@ export function initBackyard() {
     grid.append(h('div', { class: 'pet' }, btn, text));
   });
   host.replaceWith(h('div', { 'data-pets': '' }, h('p', { class: 'instruction', text: room.instruction }), grid));
-  store.on('reset', () => flipped.clear());
+  store.on('reset', () => {
+    flipped.clear();
+    presses.rico = 0;
+    presses.cheeto = 0;
+  });
 }

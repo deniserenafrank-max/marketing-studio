@@ -37,7 +37,7 @@ export function initLab() {
   if (!host) return;
   const saved = store.get().answers.lab || {};
   const values = { ...LAB.defaults, ...saved };
-  const moved = new Set(Object.keys(saved));
+  const moved = new Set(store.get().answers.labMoved || []);
 
   const heading = h('h3', { id: 'lab-heading', text: MOVES[0].labHeading });
   const sliders = h('div', { class: 'lab-sliders' });
@@ -57,15 +57,20 @@ export function initLab() {
       input.style.setProperty('--fill', `${((v - s.min) / (s.max - s.min)) * 100}%`);
     };
     input.addEventListener('input', () => {
-      render();
       moved.add(s.id);
+      render();
       live();
     });
-    input.addEventListener('change', () => store.answer('lab', { ...values }));
+    input.addEventListener('change', () => {
+      store.answer('lab', { ...values });
+      store.answer('labMoved', [...moved]);
+    });
     render();
+    input.__render = render;
     inputs[s.id] = input;
     sliders.append(wrap);
   }
+  const renderAll = () => Object.values(inputs).forEach((i) => i.__render());
   const run = h('button', { class: 'btn btn-primary', type: 'button' }, h('span', { html: icon('beaker') }), LAB.run);
   const runHint = h('span', { class: 'instruction', role: 'status', text: room.instruction });
   const runWrap = h('div', { class: 'lab-run' }, run, runHint);
@@ -120,9 +125,9 @@ export function initLab() {
       return;
     }
     runHint.textContent = room.instruction;
+    verdict.setAttribute('aria-live', 'polite');
     const result = compute(values);
     const diff = fill(result, true);
-    verdict.setAttribute('aria-live', 'polite');
     ran = true;
     store.answer('lab', { ...values });
     audio.play('pop');
@@ -140,6 +145,22 @@ export function initLab() {
   store.on('move', syncHeading);
   store.on('reset', () => {
     ran = false;
+    moved.clear();
+    Object.assign(values, LAB.defaults);
+    for (const s of LAB.sliders) inputs[s.id].value = String(LAB.defaults[s.id]);
+    renderAll();
+    lines.innerHTML = '';
+    verdict.textContent = '';
+    verdict.setAttribute('aria-live', 'off');
+    notYet.hidden = true;
+    qs('[data-own]', own).textContent = '$ ?';
+    qs('[data-rent]', rent).textContent = '$ ?';
+    for (const el of [own, rent]) {
+      const rect = qs('.beaker-fill', el);
+      rect.setAttribute('y', '118');
+      rect.setAttribute('height', '0');
+    }
+    runHint.textContent = room.instruction;
     syncHeading();
   });
 }

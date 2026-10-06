@@ -14,8 +14,9 @@ export function initMap() {
   const section = qs('#map-room');
   const host = qs('[data-map]', section);
   if (!host) return;
-  const visited = new Set(store.get().answers.towns || []);
-  let current = store.get().answers.town || null;
+  const known = new Set(TOWNS.map((t) => t.id));
+  const visited = new Set((store.get().answers.towns || []).filter((id) => known.has(id)));
+  let current = known.has(store.get().answers.town) ? store.get().answers.town : null;
 
   const map = h('div', { class: 'map', html: mapSVG() });
   map.querySelector('svg').setAttribute('aria-hidden', 'true');

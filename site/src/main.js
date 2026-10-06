@@ -55,17 +55,13 @@ function restoreNotice() {
 
 function boot() {
   wireFeedback();
-  initHud();
-  initDoors();
-  initHall();
-  initLab();
-  initEvidence();
-  initLibrary();
-  initMap();
-  initBackyard();
-  initClosing();
-  initPorch();
-  initScroll();
+  for (const [name, init] of [['hud', initHud], ['doors', initDoors], ['hall', initHall], ['lab', initLab], ['evidence', initEvidence], ['library', initLibrary], ['map', initMap], ['backyard', initBackyard], ['closing', initClosing], ['porch', initPorch], ['scroll', initScroll]]) {
+    try {
+      init();
+    } catch (err) {
+      console.error(`[journey] ${name} failed to start`, err);
+    }
+  }
   restoreNotice();
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) resumeCricketsIfOn();

@@ -82,6 +82,7 @@ export function initEvidence() {
     twine.append(line);
     lines.set(btn, pol);
     window.requestAnimationFrame(drawTwine);
+    pol.addEventListener('animationend', drawTwine, { once: true });
     window.setTimeout(() => audio.play('twang'), 180);
     count.textContent = EVIDENCE.found(found.size);
     status.textContent = EVIDENCE.correct(part.word, part.meaning);
@@ -127,5 +128,22 @@ export function initEvidence() {
   }
   document.addEventListener('room:enter', (e) => {
     if (e.detail === 'evidence-board') window.setTimeout(drawTwine, 300);
+  });
+  document.fonts?.ready?.then(drawTwine);
+  store.on('reset', () => {
+    found.clear();
+    lines.clear();
+    misses = 0;
+    polaroids.innerHTML = '';
+    twine.innerHTML = '';
+    words.forEach((w) => {
+      w.setAttribute('aria-pressed', 'false');
+      w.classList.remove('is-wrong');
+    });
+    stamp.classList.remove('is-on');
+    card.classList.remove('is-closed');
+    count.textContent = EVIDENCE.found(0);
+    status.textContent = '';
+    status.classList.remove('is-good');
   });
 }

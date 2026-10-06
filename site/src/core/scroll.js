@@ -12,9 +12,11 @@ gsap.registerPlugin(ScrollTrigger);
 let lenis = null;
 let porchTrigger = null;
 let porchScrub = () => {};
+let tickerCb = null;
 
 export function setPorchScrub(fn) {
   porchScrub = fn;
+  fn(porchTrigger?.progress ?? 0);
 }
 
 export function scrollEnabled() {
@@ -25,13 +27,17 @@ async function initLenis() {
   if (lenis || reducedMotion()) return;
   if (!window.matchMedia('(pointer: fine)').matches) return;
   const { default: Lenis } = await import('lenis');
+  if (lenis || reducedMotion()) return;
   lenis = new Lenis({ smoothWheel: true, syncTouch: false, lerp: 0.1, wheelMultiplier: 1 });
   lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  tickerCb = (time) => lenis && lenis.raf(time * 1000);
+  gsap.ticker.add(tickerCb);
   gsap.ticker.lagSmoothing(0);
 }
 
 function destroyLenis() {
+  if (tickerCb) gsap.ticker.remove(tickerCb);
+  tickerCb = null;
   if (!lenis) return;
   lenis.destroy();
   lenis = null;
@@ -39,13 +45,18 @@ function destroyLenis() {
 
 function initPorchScrub() {
   const porch = qs('#porch');
-  if (!porch || reducedMotion()) return;
-  porchTrigger = ScrollTrigger.create({
-    trigger: porch,
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 0.6,
-    onUpdate: (self) => porchScrub(self.progress),
+  if (!porch || reducedMotion() || porchTrigger) return;
+  // Measured on the next frame so a motion-class change has already resized the porch.
+  window.requestAnimationFrame(() => {
+    if (reducedMotion() || porchTrigger) return;
+    porchTrigger = ScrollTrigger.create({
+      trigger: porch,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.6,
+      onUpdate: (self) => porchScrub(self.progress),
+    });
+    ScrollTrigger.refresh();
   });
 }
 
@@ -69,7 +80,13 @@ export function goTo(id, { focus = true, immediate = false } = {}) {
     target.scrollIntoView({ behavior, block: 'start' });
     if (focus) window.setTimeout(() => focusTitle(target), behavior === 'instant' ? 0 : 700);
   }
-  if (history.state?.room !== id) history.pushState({ room: id }, '', `#${id}`);
+  if (history.state?.room !== id && location.hash !== `#${id}`) {
+    try {
+      history.pushState({ room: id }, '', `#${id}`);
+    } catch {
+      /* some embeds refuse pushState; the scroll already happened */
+    }
+  }
 }
 
 export function focusTitle(section) {
@@ -144,7 +161,7 @@ function initHashNav() {
   });
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
-    if (!a) return;
+    if (!a || a.matches('[data-knock], [data-skip]')) return;
     const id = a.getAttribute('href').slice(1);
     if (!id || !document.getElementById(id)) return;
     e.preventDefault();

@@ -36,7 +36,7 @@
 
 /* Porch: 100svh sticky scene plus extra scroll that drives the dolly. */
 .room-porch { height: 100svh; min-height: 640px; }
-html:not(.reduced-motion) .room-porch { height: 220svh; }
+html:not(.reduced-motion):not(.no-js) .room-porch { height: 220svh; }
 .porch-scene { position: sticky; top: 0; height: 100svh; min-height: 640px; overflow: hidden; background: var(--sky); z-index: 0; }
 .porch-static { position: absolute; inset: 0; width: 100%; height: 100%; }
 .porch-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -46,7 +46,7 @@ html:not(.reduced-motion) .room-porch { height: 220svh; }
   position: absolute; left: 0; right: 0; bottom: clamp(56px, 10vh, 120px); z-index: 2;
   display: grid; gap: 18px; pointer-events: none;
 }
-html:not(.reduced-motion) .room-porch .porch-copy { position: sticky; top: 0; height: 100svh; min-height: 640px; margin-top: -100svh; bottom: auto; align-content: end; padding-bottom: clamp(56px, 10vh, 120px); }
+html:not(.reduced-motion):not(.no-js) .room-porch .porch-copy { position: sticky; top: 0; height: 100svh; min-height: 640px; margin-top: -100svh; bottom: auto; align-content: end; padding-bottom: clamp(56px, 10vh, 120px); }
 .porch-copy > * { pointer-events: auto; }
 .porch-eyebrow { color: var(--c-ink2); }
 .hero-title { max-width: 14ch; text-shadow: 0 2px 24px rgb(var(--c-bg-rgb) / 0.8); }

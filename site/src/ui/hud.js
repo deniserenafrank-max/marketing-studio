@@ -144,7 +144,7 @@ export function initHud() {
 
   qs('[data-hud-open]')?.addEventListener('click', (e) => {
     const d = buildDialog();
-    const current = document.querySelector('.room.is-lit:last-of-type')?.dataset.chapter || null;
+    const current = qsa('.room.is-lit').at(-1)?.dataset.chapter || null;
     fillDialog(current);
     e.currentTarget.setAttribute('aria-expanded', 'true');
     d.showModal();
@@ -179,9 +179,10 @@ export function initHud() {
 
   qs('[data-toggle-motion]')?.addEventListener('click', () => {
     const next = reducedMotion() ? 'full' : 'reduced';
+    document.documentElement.classList.toggle('reduced-motion', next === 'reduced');
+    document.documentElement.classList.toggle('motion-full', next === 'full');
     store.setPref('motion', next);
     applyMotionClass();
-    document.documentElement.classList.toggle('motion-full', next === 'full');
     announce(next === 'reduced' ? ANNOUNCE.calmOn : ANNOUNCE.calmOff);
     syncToggles();
   });

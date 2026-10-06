@@ -161,5 +161,13 @@ function crickets(on) {
 }
 
 export function resumeCricketsIfOn() {
-  if (audio.enabled && ctx) crickets(true);
+  if (!audio.enabled || !ctx) return;
+  if (ctx.state !== 'running') ctx.resume().catch(() => {});
+  crickets(true);
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('pointerdown', () => {
+    if (audio.enabled && ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
+  }, { passive: true });
 }

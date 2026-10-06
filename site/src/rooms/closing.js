@@ -15,7 +15,6 @@ export function initClosing() {
   const section = qs('#closing-table');
   const table = qs('[data-table]', section);
   const sub = qs('[data-closing-sub]', section);
-  const title = qs('#closing-table-title', section);
   if (!table) return;
   table.removeAttribute('aria-hidden');
   const moveLine = h('h3', { class: 'contact-move' });
@@ -45,7 +44,6 @@ export function initClosing() {
     const state = store.get();
     const n = state.keys.length;
     const move = MOVES.find((m) => m.id === state.move);
-    title.textContent = room.headline;
     moveLine.textContent = move ? move.closing : 'Tell me what you’re planning.';
     if (n === TOTAL_KEYS) sub.textContent = room.full;
     else if (n === 0) sub.textContent = room.skipped;
@@ -74,17 +72,24 @@ export function initClosing() {
     copyBtn.innerHTML = `${icon('copy')}<span>${CLOSING.copy}</span>`;
     copyBtn.addEventListener('click', async () => {
       const num = copyBtn.dataset.copy;
+      const label = qs('span', copyBtn);
+      let copied = false;
       try {
         await navigator.clipboard.writeText(num);
+        copied = true;
       } catch {
         const range = document.createRange();
         range.selectNodeContents(qs('#phone-direct', section));
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
+        try {
+          copied = document.execCommand('copy');
+        } catch {
+          copied = false;
+        }
       }
-      const label = qs('span', copyBtn);
-      label.textContent = CLOSING.copied;
+      label.textContent = copied ? CLOSING.copied : 'Number selected';
       window.setTimeout(() => (label.textContent = CLOSING.copy), 2000);
     });
   }

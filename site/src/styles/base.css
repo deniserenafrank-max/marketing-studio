@@ -109,6 +109,7 @@ strong { font-weight: 600; }
   transform: translateY(-200%);
 }
 .skip-link:focus-visible { transform: none; outline-color: var(--c-ink); }
+.skip-link:hover { color: var(--c-bg); }
 
 .eyebrow {
   font-family: var(--font-mono);
