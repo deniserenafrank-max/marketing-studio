@@ -496,3 +496,27 @@ accessibility, developer) briefed in parallel from one dossier, then reviewed th
 **The one change:** every visual change ships with the frame that proves it. The proof and
 play scripts take a side `OUT_DIR` so reviewers' preview servers are never rebuilt under
 them, and the creative director reviews frames before the accessibility auditor runs.
+
+**Review round, same day (the four roles against the real build):**
+- Creative director: 7 MUST (phone bar collisions, HUD under content, house behind the phone
+  copy, flipped cards losing their word, toast stacking, a quoted default interest rate, a
+  finale that read as a footer icon row), all fixed; the copy nits restored the CD's own
+  lines ("Let's get you keys.", "Needs a contractor.", the in-person sub) and cut duplicate
+  instruction lines.
+- Code review: 20 reproduced findings, 1 blocker (HUD pills overlapping at 1100px+), 6 MUST
+  (Lenis ticker callback left running after Calm mode, scrub re-measured before the motion
+  class changed, Evidence Board with no reset, an unknown stored town id aborting boot, the
+  Lab "moved" set inferred from stored values, a missing photo hiding the other side's real
+  photo), all fixed. `h()` had silently dropped every CSS custom property passed as style.
+- Accessibility audit: no blockers, 6 MUST (focus under the fixed bars, 13px disclosures,
+  the logo's accessible name, the word "quiet" in the listing, plus two already fixed),
+  all fixed; the axe gate now also covers open cards, 320px and 640px, reduced motion and
+  forced colors (with contrast math skipped under forced colors, where it is meaningless).
+- UX review: the model held (keyboard, reward beat, personalization, persistence, reduced
+  motion); one MUST, the phone Closing Table hiding the number below a 619px key board,
+  fixed by ordering the contact block first on phones.
+
+**Lesson that generalizes:** a review of rendered frames and a review of the live build found
+disjoint bug sets. Neither the rest-frame proof nor axe saw the overlapping HUD, the dead
+Skip, or the vanished tilt; only the play-through and the adversarial read did. Keep all
+three, and never let a reviewer audit a `dist/` that the developer is rebuilding.

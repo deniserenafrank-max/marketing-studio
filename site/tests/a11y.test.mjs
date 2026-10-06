@@ -18,7 +18,11 @@ function describe(violations) {
 }
 
 async function auditPage(page, label, findings) {
-  const results = await new AxeBuilder({ page }).withTags(TAGS).exclude('canvas').analyze();
+  // Under forced colors the system paints every color, so axe's contrast math (authored text
+  // color against the forced background) is meaningless; everything else still applies.
+  const builder = new AxeBuilder({ page }).withTags(TAGS).exclude('canvas');
+  if (label.startsWith('forced-colors')) builder.disableRules(['color-contrast']);
+  const results = await builder.analyze();
   const serious = results.violations.filter((v) => impactRank[v.impact] >= impactRank.moderate);
   if (serious.length) findings.push(`[${label}]\n${describe(serious)}`);
 }
