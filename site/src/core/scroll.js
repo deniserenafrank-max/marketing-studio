@@ -76,6 +76,9 @@ export function goTo(id, { focus = true, immediate = false } = {}) {
   const behavior = immediate || reducedMotion() ? 'instant' : 'smooth';
   if (lenis && behavior === 'smooth') {
     lenis.scrollTo(target, { offset: 0, duration: 1.1, onComplete: () => focus && focusTitle(target) });
+  } else if (lenis) {
+    lenis.scrollTo(target, { offset: 0, immediate: true, force: true });
+    if (focus) focusTitle(target);
   } else {
     target.scrollIntoView({ behavior, block: 'start' });
     if (focus) window.setTimeout(() => focusTitle(target), behavior === 'instant' ? 0 : 700);
@@ -155,7 +158,8 @@ function initHashNav() {
     const id = location.hash.slice(1);
     if (id && document.getElementById(id)) {
       const target = document.getElementById(id);
-      target.scrollIntoView({ behavior: 'instant', block: 'start' });
+      if (lenis) lenis.scrollTo(target, { offset: 0, immediate: true, force: true });
+      else target.scrollIntoView({ behavior: 'instant', block: 'start' });
       focusTitle(target);
     }
   });
