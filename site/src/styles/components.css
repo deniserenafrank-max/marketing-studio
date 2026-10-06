@@ -226,7 +226,7 @@ html:not(.reduced-motion) .reveal.is-in .reveal-word { animation: word-in var(--
 html:not(.reduced-motion) .polaroid { animation: swing-in var(--t-slow) var(--ease-spring) both; transform-origin: 24px 0; }
 @keyframes swing-in { 0% { opacity: 0; transform: rotate(-6deg) translateY(-10px); } 100% { opacity: 1; transform: rotate(var(--tilt, -1deg)); } }
 .polaroid { transform: rotate(var(--tilt, -1deg)); }
-.stamp { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 70%; padding: 8px 12px; border: 3px solid var(--c-brand); outline: 1px solid var(--c-brand); outline-offset: 3px; border-radius: 4px; color: var(--c-brand); font-family: var(--font-display); font-size: clamp(1.4rem, 3.2vw, 2.75rem); line-height: 1; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; transform: rotate(-12deg); opacity: 0; pointer-events: none; z-index: 2; }
+.stamp { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: max-content; max-width: 94%; padding: 8px 14px; border: 3px solid var(--c-brand); outline: 1px solid var(--c-brand); outline-offset: 3px; border-radius: 4px; color: var(--c-brand); font-family: var(--font-display); font-size: clamp(1.05rem, 5.2vw, 2.75rem); white-space: nowrap; line-height: 1; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; transform: rotate(-12deg); opacity: 0; pointer-events: none; z-index: 2; }
 .stamp.is-on { opacity: 0.95; animation: stamp-in 420ms var(--ease-spring) both; }
 @keyframes stamp-in { 0% { opacity: 0; transform: rotate(-12deg) scale(1.6); } 100% { opacity: 0.92; transform: rotate(-12deg) scale(1); } }
 .index-card.is-closed .word[aria-pressed="true"] { background: rgb(var(--c-profit-rgb) / 0.35); }

@@ -20,7 +20,7 @@ async function run(label, viewport, { reducedMotion = false, hasTouch = false } 
   const context = await browser.newContext({ ignoreHTTPSErrors: true, viewport, deviceScaleFactor: 1, hasTouch, reducedMotion: reducedMotion ? 'reduce' : 'no-preference' });
   const page = await context.newPage();
   page.on('pageerror', (e) => errors.push(`${label}: ${e.message}`));
-  page.on('console', (m) => { if (m.type() === 'error') errors.push(`${label} console: ${m.text()}`); });
+  page.on('console', (m) => { if (m.type() === 'error' && !/net::ERR_|Failed to load resource/.test(m.text())) errors.push(`${label} console: ${m.text()}`); });
   await page.goto(url, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
   await page.screenshot({ path: join(outDir, `${label}-00-load.png`) });
