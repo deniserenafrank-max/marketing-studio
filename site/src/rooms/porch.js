@@ -35,6 +35,7 @@ export function initPorch() {
           canvas.hidden = false;
           scene = createPorchScene(canvas, { reduced: reducedMotion(), lowPower: lowPower() });
           wrap.classList.add('has-webgl');
+          window.__porch = scene;
           setPorchScrub((p) => scene.setScroll(p));
           if (window.matchMedia('(pointer: fine)').matches) {
             window.addEventListener('pointermove', (e) => {

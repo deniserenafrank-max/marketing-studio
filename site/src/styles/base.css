@@ -6,6 +6,7 @@
   color-scheme: dark;
   /* Derived shades for depth (darker than bg) and mist (toward line). */
   --c-bg-deep: #03110c;
+  --c-bg-deep-rgb: 3 17 12;
   --c-pine-1: #03110c;
   --c-pine-2: #061a13;
   --c-pine-3: #0c2a1f;

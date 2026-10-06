@@ -41,10 +41,10 @@ function wireFeedback() {
     const a = ACHIEVEMENTS.find((x) => x.id === id);
     if (!a) return;
     window.setTimeout(() => {
-      showToast({ iconName: 'check', kicker: 'Achievement', text: `${a.name}. ${a.desc}` });
+      showToast({ iconName: 'check', kicker: 'Achievement', text: a.name, foldable: true });
       announce(ANNOUNCE.achievement(a.name));
       audio.play('pop');
-    }, 600);
+    }, 500);
   });
 }
 

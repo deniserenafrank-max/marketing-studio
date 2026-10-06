@@ -2,3 +2,4 @@ node_modules/
 dist/
 .proof/
 dist-artifact/
+dist-next/

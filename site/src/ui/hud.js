@@ -6,6 +6,7 @@ import { announce } from '../core/announce.js';
 import { audio } from '../core/audio.js';
 import { reducedMotion, applyMotionClass } from '../core/prefs.js';
 import { keySVG, hookSVG, ringSVG } from './keys.js';
+import { showToast } from './toast.js';
 import { icon } from './icons.js';
 import { KEYS, ROOMS, MOVES, HUD, ACHIEVEMENTS, ANNOUNCE, TOTAL_KEYS } from '../content/copy.js';
 import { goTo } from '../core/scroll.js';
@@ -149,8 +150,13 @@ export function initHud() {
     d.showModal();
   });
 
+  initSkipSwap();
   qs('[data-skip]')?.addEventListener('click', (e) => {
     e.preventDefault();
+    if (e.currentTarget.dataset.mode === 'back') {
+      goTo(e.currentTarget.getAttribute('href').slice(1));
+      return;
+    }
     const lit = qsa('.room.is-lit');
     lastRoomBeforeSkip = lit.length ? lit[lit.length - 1].dataset.chapter : 'porch';
     if (store.get().keys.length < TOTAL_KEYS) store.unlock('straight');
@@ -198,9 +204,34 @@ export function lastSkipOrigin() {
   return lastRoomBeforeSkip;
 }
 
+let hinted = false;
 export function showSoundHint() {
-  if (audio.enabled || qs('.hud-hint')) return;
-  const hint = h('div', { class: 'hud-hint', text: HUD.soundHint, 'aria-hidden': 'true' });
-  document.body.append(hint);
-  window.setTimeout(() => hint.remove(), 6000);
+  if (audio.enabled || hinted) return;
+  hinted = true;
+  showToast({ iconName: 'soundOff', kicker: HUD.soundKicker, text: HUD.soundHint });
+}
+
+function initSkipSwap() {
+  const skip = qs('[data-skip]');
+  if (!skip) return;
+  const long = qs('.hud-skip-long', skip);
+  const short = qs('.hud-skip-short', skip);
+  let lastRoom = 'front-hall';
+  document.addEventListener('room:enter', (e) => {
+    const id = e.detail;
+    if (id === 'closing-table') {
+      skip.dataset.mode = 'back';
+      skip.setAttribute('href', `#${lastRoom}`);
+      skip.setAttribute('aria-label', HUD.back);
+      if (long) long.textContent = HUD.back;
+      if (short) short.textContent = HUD.back;
+    } else {
+      if (id !== 'porch') lastRoom = id;
+      skip.dataset.mode = 'skip';
+      skip.setAttribute('href', '#closing-table');
+      skip.setAttribute('aria-label', HUD.skip);
+      if (long) long.textContent = HUD.skip;
+      if (short) short.textContent = HUD.skipShort;
+    }
+  });
 }

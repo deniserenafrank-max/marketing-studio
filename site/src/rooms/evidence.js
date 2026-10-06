@@ -53,7 +53,7 @@ export function initEvidence() {
   twine.setAttribute('aria-hidden', 'true');
   const inner = h('div', { class: 'board-inner' }, h('div', {}, card, count, status), polaroids);
   const board = h('div', { class: 'board' }, twine, inner);
-  host.replaceWith(h('div', { 'data-evidence': '' }, h('p', { class: 'instruction', text: room.instruction }), board));
+  host.replaceWith(h('div', { 'data-evidence': '' }, room.instruction ? h('p', { class: 'instruction', text: room.instruction }) : null, board));
 
   const lines = new Map();
   function drawTwine() {
@@ -98,6 +98,7 @@ export function initEvidence() {
   }
   function closeCase(restoring = false) {
     stamp.classList.add('is-on');
+    card.classList.add('is-closed');
     if (!restoring) {
       audio.play('pin');
       store.earnKey('case');

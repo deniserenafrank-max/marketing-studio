@@ -2,7 +2,8 @@
 
 .journey { position: relative; z-index: var(--z-page); }
 .room { position: relative; }
-.room-inner { position: relative; padding-block: clamp(5rem, 12vw, 9rem); }
+.room-inner { position: relative; padding-block: clamp(5rem, 12vw, 9rem) calc(clamp(5rem, 12vw, 9rem) + 104px); }
+@media (max-width: 767px) { .room-inner { padding-bottom: calc(4rem + 88px); } }
 .room-inner > .eyebrow { margin-bottom: 12px; }
 .room-inner > .room-title { margin-bottom: 1.25rem; }
 .room-inner > .room-intro { margin-bottom: 1rem; }
@@ -11,17 +12,26 @@
 /* Lamp: a warm glow that comes on when the room enters the viewport. */
 .room:not(.room-porch)::before {
   content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  background: radial-gradient(60% 50% at var(--lamp-x, 70%) var(--lamp-y, 20%), rgb(var(--c-brand-rgb) / 0.11), transparent 70%);
+  background:
+    radial-gradient(900px 620px at var(--lamp-x, 50%) var(--lamp-y, 55%), rgb(var(--c-brand-rgb) / 0.07), transparent 70%),
+    radial-gradient(120% 90% at 50% 50%, transparent 50%, rgb(var(--c-bg-deep-rgb, 3 17 12) / 0.35) 100%);
   opacity: 0; transition: opacity var(--t-slow) var(--ease-out);
 }
 .room.is-lit::before { opacity: 1; }
-.room-hall { --lamp-x: 75%; --lamp-y: 25%; }
-.room-lab { --lamp-x: 30%; --lamp-y: 20%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
-.room-evidence { --lamp-x: 50%; --lamp-y: 15%; }
-.room-library { --lamp-x: 80%; --lamp-y: 30%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
-.room-map { --lamp-x: 25%; --lamp-y: 30%; }
-.room-backyard { --lamp-x: 70%; --lamp-y: 20%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
-.room-closing { --lamp-x: 50%; --lamp-y: 35%; }
+.room-hall { --lamp-x: 36%; --lamp-y: 58%; }
+.room-lab { --lamp-x: 70%; --lamp-y: 55%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
+.room-evidence { --lamp-x: 50%; --lamp-y: 60%; }
+.room-library { --lamp-x: 45%; --lamp-y: 62%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
+.room-map { --lamp-x: 30%; --lamp-y: 60%; }
+.room-backyard { --lamp-x: 32%; --lamp-y: 62%; background: linear-gradient(180deg, transparent, rgb(var(--c-surface-rgb) / 0.5) 30%, rgb(var(--c-surface-rgb) / 0.5) 70%, transparent); }
+.room-closing { --lamp-x: 50%; --lamp-y: 42%; }
+.room-hall .room-inner { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+.room-hall .room-inner > * { grid-column: 1; }
+.room-hall .key-board { margin-top: 2rem; max-width: 520px; }
+@media (min-width: 1024px) {
+  .room-hall .room-inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(2rem, 5vw, 5rem); }
+  .room-hall .key-board { grid-column: 2; grid-row: 1 / span 6; align-self: center; margin-top: 0; }
+}
 .room-closing .room-inner { padding-bottom: clamp(3rem, 6vw, 5rem); }
 
 /* Porch: 100svh sticky scene plus extra scroll that drives the dolly. */
@@ -53,6 +63,6 @@ html:not(.reduced-motion) .room-porch .porch-copy { position: sticky; top: 0; he
 
 /* Phone-width tightening */
 @media (max-width: 480px) {
-  .room-inner { padding-block: 4rem; }
+  .room-inner { padding-block: 4rem calc(4rem + 88px); }
   .hero-title { font-size: clamp(2.5rem, 12vw, 3.2rem); }
 }

@@ -19,16 +19,20 @@ export function initBackyard() {
   PETS.forEach((p, i) => {
     let side = 'real';
     const img = h('img', { src: p.img.real, alt: p.altReal, width: 480, height: 600, loading: 'lazy', decoding: 'async' });
-    const portrait = h('div', { html: petPortrait(p.id), hidden: true });
-    const pending = h('span', { class: 'pet-pending', hidden: true, text: 'Photo pending' });
+    const portrait = h('div', { class: 'pet-portrait-wrap', html: petPortrait(p.id, 'real'), hidden: true });
+    let missing = false;
     img.addEventListener('error', () => {
+      missing = true;
       img.hidden = true;
       portrait.hidden = false;
-      qs('svg', portrait).removeAttribute('hidden');
-      pending.hidden = false;
+    });
+    img.addEventListener('load', () => {
+      missing = false;
+      img.hidden = false;
+      portrait.hidden = true;
     });
     const plaque = h('span', { class: 'pet-plaque', hidden: true, text: p.title });
-    const frame = h('div', { class: 'pet-frame' }, img, portrait, pending, plaque);
+    const frame = h('div', { class: 'pet-frame' }, img, portrait, plaque);
     const sideLabel = h('span', { class: 'pet-side', text: PET_SIDES.real });
     const caption = h('div', { class: 'pet-caption' }, h('strong', { text: p.name }), sideLabel);
     const btn = h('button', { class: 'polaroid-btn', type: 'button', 'aria-pressed': 'false', style: { '--tilt': `${i === 0 ? -1.5 : 1.2}deg` }, 'aria-label': `${p.name}, ${PET_SIDES.real.toLowerCase()}. Press to see ${PET_SIDES.work.toLowerCase()}.` }, frame, caption);
@@ -39,8 +43,10 @@ export function initBackyard() {
       const work = side === 'work';
       btn.setAttribute('aria-pressed', work ? 'true' : 'false');
       btn.setAttribute('aria-label', `${p.name}, ${PET_SIDES[side].toLowerCase()}. Press to see ${PET_SIDES[work ? 'real' : 'work'].toLowerCase()}.`);
+      portrait.innerHTML = petPortrait(p.id, side);
       img.src = work ? p.img.work : p.img.real;
       img.alt = work ? p.altWork : p.altReal;
+      if (!missing) img.hidden = false;
       sideLabel.textContent = PET_SIDES[side];
       plaque.hidden = !work;
       line.textContent = work ? p.advice : p.real;

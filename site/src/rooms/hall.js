@@ -5,6 +5,7 @@ import { store } from '../core/store.js';
 import { icon } from '../ui/icons.js';
 import { MOVES } from '../content/copy.js';
 import { rovingGroup } from './roving.js';
+import { keyBoard } from '../ui/keyboard.js';
 
 const ICONS = { buy: 'door', sell: 'stamp', rent: 'calendar', landlord: 'book' };
 
@@ -22,6 +23,7 @@ export function initHall() {
   });
   group.append(...buttons);
   host.replaceWith(group);
+  qs('.room-inner', section).append(keyBoard());
 
   function sync() {
     const current = store.get().move;

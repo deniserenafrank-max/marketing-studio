@@ -39,7 +39,7 @@ export const KEYS = [
   { id: 'map', name: 'Map Key', room: 'map-room' },
   { id: 'backyard', name: 'Backyard Key', room: 'backyard' },
 ];
-export const HOUSE_KEY = { name: 'House Key', tag: 'Handed over in person' };
+export const HOUSE_KEY = { name: 'House Key', tag: 'Handed over in person', still: 'still in the house' };
 
 export const ROOMS = [
   {
@@ -71,7 +71,7 @@ export const ROOMS = [
     id: 'evidence-board', num: 4, title: 'The Evidence Board', key: 'case', verb: 'Tap',
     eyebrow: 'Room four',
     intro: 'True crime fan. Occupational hazard: I read listings like case files. Here’s one. Tap every word that’s hiding something. The twine does the rest.',
-    instruction: 'Tap the five words that hide something.',
+    instruction: null,
     caseLabel: 'Case file 0530671',
     stamp: 'Case closed',
     wrong: 'Not quite. Try another word.',
@@ -82,7 +82,7 @@ export const ROOMS = [
     id: 'library', num: 5, title: 'The Library', key: 'library', verb: 'Flip',
     eyebrow: 'Room five',
     intro: 'Bookworm. Real estate has its own language and nobody hands you the glossary. Flip five cards. They show up on your paperwork whether you know them or not.',
-    instruction: 'Flip a card to learn the word.',
+    instruction: null,
     toast: 'Library Key. You now speak fluent closing table.',
     next: 'map-room',
   },
@@ -109,7 +109,7 @@ export const ROOMS = [
     sub: 'Seven on the ring. One hook empty. That one is the house key, and I hand it over in person.',
     skipped: 'Straight to the table. I respect that. Everything you need is right here.',
     partial: 'You left a few keys behind. The door still opens.',
-    full: 'Full ring. One hook empty, on purpose. Let’s fill it.',
+    full: 'Seven on the ring. One hook empty. That one is the house key, and I hand it over in person.',
     next: null,
   },
 ];
@@ -136,7 +136,9 @@ export const LAB = {
   ownLabel: 'To own',
   rentLabel: 'To rent',
   perMonth: 'per month, first year',
-  lines: ['Principal and interest', 'Property taxes', 'Home insurance', 'HOA dues', 'PMI', 'Upkeep and repairs'],
+  lines: ['Principal and interest', 'Property taxes', 'Home insurance', 'HOA dues', 'PMI', 'Upkeep, 1% of price a year, rule of thumb'],
+  rateUnset: 'your lender’s quote',
+  rateHint: 'Set a rate from your lender’s quote first.',
   pmiRate: 0.006,
   upkeepRate: 0.01,
   termYears: 30,
@@ -145,7 +147,7 @@ export const LAB = {
 export const EVIDENCE = {
   listing: [
     'Charming ', { word: 'cozy', meaning: 'Small. Bring a tape measure.' }, ' 3/2 on a quiet cul-de-sac. ',
-    { word: 'Needs TLC', meaning: 'Bring an inspector.' }, ' but priced to move. ',
+    { word: 'Needs TLC', meaning: 'Needs a contractor.' }, ' but priced to move. ',
     { word: 'Motivated seller', meaning: 'Price is a conversation. Bring an offer.' }, '! ',
     { word: 'Investor special', meaning: 'Bring a flashlight.' }, ' with a ',
     { word: 'partial lake view', meaning: 'Stand on the roof.' }, '. Won’t last!',
@@ -159,7 +161,7 @@ export const LIBRARY = [
   { id: 'pmi', word: 'PMI', def: 'Mortgage insurance that rides along with many smaller down payments.', gloss: 'It protects the lender, not you.' },
   { id: 'homestead', word: 'Homestead exemption', def: 'A filing that can lower the taxable value of the home you live in.', gloss: 'Easy to miss.' },
   { id: 'escrow', word: 'Escrow', def: 'Where the money waits until everyone keeps their promises.', gloss: 'Patience, in account form.' },
-  { id: 'earnest', word: 'Earnest money', def: 'The deposit that says “I mean it.”', gloss: 'It comes back to you at closing, usually.' },
+  { id: 'earnest', word: 'Earnest money', def: 'The deposit that says “I mean it.”', gloss: 'Credited to you at closing, if you close.' },
 ];
 
 export const TOWNS = [
@@ -206,8 +208,9 @@ export const HUD = {
   progress: (n, total) => `Keys ${n} of ${total}`,
   ring: 'Keyring',
   skip: 'Skip to the closing table',
+  skipShort: 'Skip to closing',
   back: 'Back to the tour',
-  soundOn: 'Sound on', soundOff: 'Sound off', soundHint: 'Crickets included.',
+  soundOn: 'Sound on', soundOff: 'Sound off', soundHint: 'Crickets included. Sound stays off until you turn it on.', soundKicker: 'Sound',
   calmOn: 'Calm mode on', calmOff: 'Calm mode off',
   menu: 'Your keyring',
   restart: 'Start over', restartConfirm: 'Clear your keys and start over?', restartYes: 'Yes, start over', restartNo: 'Keep my keys',

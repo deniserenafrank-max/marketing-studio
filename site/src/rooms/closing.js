@@ -18,6 +18,8 @@ export function initClosing() {
   const title = qs('#closing-table-title', section);
   if (!table) return;
   table.removeAttribute('aria-hidden');
+  const moveLine = h('h3', { class: 'contact-move' });
+  qs('.contact-actions', section)?.prepend(moveLine);
   table.setAttribute('role', 'list');
   table.setAttribute('aria-label', 'Your keyring on the table');
   let landed = false;
@@ -28,7 +30,7 @@ export function initClosing() {
     table.innerHTML = '';
     KEYS.forEach((k, i) => {
       const earned = state.keys.includes(k.id);
-      const el = h('div', { class: `table-key ${earned ? 'is-earned' : 'is-missing'}`, role: 'listitem' }, h('span', { html: keySVG(i, { earned, size: 48 }) }), h('span', { class: 'table-key-name', text: earned ? k.name : `${k.name}: still in the house` }));
+      const el = h('div', { class: `table-key ${earned ? 'is-earned' : 'is-missing'}`, role: 'listitem', 'aria-label': `${k.name}, ${earned ? 'earned' : HOUSE_KEY.still}` }, h('span', { html: keySVG(i, { earned, size: 88 }) }), h('span', { class: 'table-key-name', 'aria-hidden': 'true' }, h('span', { text: k.name }), h('span', { class: 'table-key-state', text: earned ? 'earned' : HOUSE_KEY.still })));
       if (animate && earned && !reducedMotion()) {
         el.classList.add('is-landing');
         el.style.animationDelay = `${i * 140}ms`;
@@ -36,14 +38,15 @@ export function initClosing() {
       }
       table.append(el);
     });
-    table.append(h('div', { class: 'table-key table-hook', role: 'listitem' }, h('span', { html: hookSVG({ size: 48 }) }), h('span', { class: 'table-hook-tag', text: `${HOUSE_KEY.name}. ${HOUSE_KEY.tag}.` })));
+    table.append(h('div', { class: 'table-key table-hook', role: 'listitem', 'aria-label': `${HOUSE_KEY.name}, ${HOUSE_KEY.tag.toLowerCase()}` }, h('span', { class: 'table-hook-wrap' }, h('span', { html: hookSVG({ size: 88 }) }), h('span', { class: 'paper-tag', 'aria-hidden': 'true' }, h('span', { class: 'paper-tag-hole' }), h('span', { text: HOUSE_KEY.name }), h('span', { class: 'paper-tag-sub', text: HOUSE_KEY.tag.toLowerCase() })))));
   }
 
   function renderCopy() {
     const state = store.get();
     const n = state.keys.length;
     const move = MOVES.find((m) => m.id === state.move);
-    title.textContent = move ? move.closing : room.headline;
+    title.textContent = room.headline;
+    moveLine.textContent = move ? move.closing : 'Tell me what you’re planning.';
     if (n === TOTAL_KEYS) sub.textContent = room.full;
     else if (n === 0) sub.textContent = room.skipped;
     else sub.textContent = room.partial;

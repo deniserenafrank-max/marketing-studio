@@ -16,10 +16,10 @@ export function initLibrary() {
   const shelf = h('div', { class: 'shelf', role: 'group', 'aria-label': 'Word of the day cards' });
   LIBRARY.forEach((w, i) => {
     const defId = `def-${w.id}`;
-    const back = h('div', { class: 'flip-face flip-back', id: defId }, h('p', { class: 'flip-def', text: w.def }), h('p', { class: 'flip-gloss', text: w.gloss }));
+    const back = h('div', { class: 'flip-face flip-back', id: defId }, h('p', { class: 'flip-term', text: w.word }), h('p', { class: 'flip-def', text: w.def }), h('p', { class: 'flip-gloss', text: w.gloss }));
     const front = h('div', { class: 'flip-face flip-front' }, h('div', { class: 'flip-num' }, h('span', { text: `Word ${String(i + 1).padStart(2, '0')} of ${String(LIBRARY.length).padStart(2, '0')}` })), h('div', { class: 'flip-word', text: w.word }), h('div', { html: icon('book') }));
     const btn = h('button', { class: 'flip-btn', type: 'button', 'aria-expanded': 'false', 'aria-controls': defId }, h('div', { class: 'flip-card' }, front, back));
-    const wrap = h('div', { class: 'flip' }, btn);
+    const wrap = h('div', { class: 'flip', style: { '--book': String(i) } }, btn);
     const setOpen = (open) => {
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       back.setAttribute('aria-hidden', open ? 'false' : 'true');
@@ -46,7 +46,7 @@ export function initLibrary() {
     if (flipped.has(w.id)) wrap.classList.add('is-earned');
     shelf.append(wrap);
   });
-  host.replaceWith(h('div', { 'data-library': '' }, h('p', { class: 'instruction', text: room.instruction }), shelf));
+  host.replaceWith(h('div', { 'data-library': '' }, room.instruction ? h('p', { class: 'instruction', text: room.instruction }) : null, shelf));
   store.on('reset', () => {
     flipped.clear();
     qsa('.flip', shelf).forEach((f) => f.classList.remove('is-earned'));

@@ -37,7 +37,7 @@ export function initLab() {
   if (!host) return;
   const saved = store.get().answers.lab || {};
   const values = { ...LAB.defaults, ...saved };
-  const moved = new Set();
+  const moved = new Set(Object.keys(saved));
 
   const heading = h('h3', { id: 'lab-heading', text: MOVES[0].labHeading });
   const sliders = h('div', { class: 'lab-sliders' });
@@ -50,8 +50,10 @@ export function initLab() {
     const render = () => {
       const v = Number(input.value);
       values[s.id] = v;
-      out.textContent = s.unit === 'usd' ? formatUSD(v) : `${v}%`;
-      input.setAttribute('aria-valuetext', s.text(v));
+      const unset = s.id === 'rate' && !moved.has('rate');
+      out.textContent = unset ? LAB.rateUnset : s.unit === 'usd' ? formatUSD(v) : `${v}%`;
+      out.classList.toggle('is-unset', unset);
+      input.setAttribute('aria-valuetext', unset ? `${LAB.rateUnset}: move to set` : s.text(v));
       input.style.setProperty('--fill', `${((v - s.min) / (s.max - s.min)) * 100}%`);
     };
     input.addEventListener('input', () => {
@@ -65,7 +67,8 @@ export function initLab() {
     sliders.append(wrap);
   }
   const run = h('button', { class: 'btn btn-primary', type: 'button' }, h('span', { html: icon('beaker') }), LAB.run);
-  const runWrap = h('div', { class: 'lab-run' }, run, h('span', { class: 'instruction', text: room.instruction }));
+  const runHint = h('span', { class: 'instruction', role: 'status', text: room.instruction });
+  const runWrap = h('div', { class: 'lab-run' }, run, runHint);
 
   const bench = h('div', { class: 'lab-bench', 'aria-describedby': 'lab-disclaimer' });
   const own = h('div', { class: 'beaker beaker-own' }, h('div', { html: beakerSVG('', 'beaker-clip-own') }), h('div', { class: 'beaker-amount num', 'data-own': '', text: '$ ?' }), h('div', { class: 'beaker-label', text: `${LAB.ownLabel}, ${LAB.perMonth}` }));
@@ -111,6 +114,12 @@ export function initLab() {
     if (ran) fill(compute(values), true);
   }
   run.addEventListener('click', () => {
+    if (!moved.has('rate')) {
+      runHint.textContent = LAB.rateHint;
+      inputs.rate.focus();
+      return;
+    }
+    runHint.textContent = room.instruction;
     const result = compute(values);
     const diff = fill(result, true);
     verdict.setAttribute('aria-live', 'polite');
