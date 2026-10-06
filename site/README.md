@@ -18,9 +18,15 @@ npm run dev        # http://127.0.0.1:5173
 npm run build      # dist/ (relative paths, deploys from any folder)
 npm test           # copy gate, lab math, skyline, then axe over every room state (needs a build)
 node scripts/proof.mjs .proof        # screenshots: every room, desktop, phone, reduced motion
-node scripts/play.mjs .proof/play     # scripted play-through with earned states
+node scripts/play.mjs .proof/play     # scripted play-through with earned states (add "phone" for 390px)
 node scripts/lint-copy.mjs            # no em dashes, no hype, Fair Housing banned list
+node scripts/og.mjs                   # regenerate public/og.jpg from the Porch
+node scripts/build-artifact.mjs       # dist-artifact/artifact.html, the single-file preview page
 ```
+
+Every proof script serves `dist/` by default; set `OUT_DIR=dist-next` to point them at a side
+build (`npx vite build --outDir dist-next`) so a reviewer's preview of `dist/` is never
+rebuilt underneath them.
 
 Node 22. Playwright uses the preinstalled Chromium when `PLAYWRIGHT_BROWSERS_PATH` points at
 one (see `scripts/browser.mjs`); otherwise run `npx playwright install chromium` once.
@@ -59,6 +65,14 @@ on the site on purpose: nothing was invented, and none was available to the buil
   region (`announce.js`), scroll choreography (`scroll.js`), procedural sound (`audio.js`).
 - `src/ui/`: HUD, keys, icons, toasts, the drawn map, the pet portraits.
 - `tests/`: `copy.test.mjs` (unit) and `a11y.test.mjs` (axe over every room state).
+
+## Review record
+
+`docs/team/` holds the five briefs the build was synthesized from. The build was then reviewed
+by the same roles against rendered frames and the live build: the creative director's critique,
+the UX review, the accessibility audit (manual WCAG 2.2 AA script, forced colors, 320px, no-JS)
+and an adversarial code review. Every MUST from those reviews is in this build; the lists are
+summarized in the retro entry in `docs/ERRORS.md` (2026-10-06).
 
 ## Compliance
 

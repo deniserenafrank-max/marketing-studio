@@ -38,7 +38,7 @@ for (const id of ['lab-price', 'lab-down', 'lab-rate', 'lab-tax', 'lab-insurance
 }
 await page.focus('#lab-price');
 for (let i = 0; i < 6; i += 1) await page.keyboard.press('ArrowRight');
-await page.click('text=Run the numbers');
+await page.click('button:has-text("Run the numbers")');
 await settle(1300);
 await shot('03-lab-run');
 await scrollTo('evidence-board');
