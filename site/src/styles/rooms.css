@@ -59,6 +59,11 @@ html:not(.reduced-motion) .room-porch .porch-copy { position: sticky; top: 0; he
 .porch-fallback-note { position: absolute; left: var(--gutter); top: calc(72px + env(safe-area-inset-top, 0px)); font-family: var(--font-mono); font-size: var(--fs-label); color: var(--c-ink2); z-index: 2; max-width: 40ch; }
 .scroll-cue { position: absolute; right: var(--gutter); bottom: clamp(24px, 5vh, 56px); z-index: 2; font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-ink2); display: flex; align-items: center; gap: 8px; }
 @media (max-width: 767px) { .scroll-cue { display: none; } .porch-copy { bottom: 110px; } }
+@media (max-width: 600px) {
+  .porch-copy { top: 14vh; bottom: auto; }
+  html:not(.reduced-motion) .room-porch .porch-copy { align-content: start; padding-top: 14vh; padding-bottom: 0; }
+  .hero-sub { font-size: 1.05rem; }
+}
 .porch-scene.is-knocked .porch-static { filter: brightness(1.15); }
 
 /* Phone-width tightening */

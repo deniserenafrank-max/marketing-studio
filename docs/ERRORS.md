@@ -457,3 +457,42 @@ minutes and blocked the benchmark until they were stopped by PID). Read flags fr
 
 **Prevention.** Time the thing before designing the fix; a speed spec starts with a
 table of measurements and names the hypothesis it killed.
+
+---
+
+## 2026-10-06 — The Unusual Open House (Denise Frank's journey site): retro at the review gate
+
+**What was built:** `site/`, a Vite + vanilla JS progressive-game site for Denise Frank
+(Hometown Realtors of Texas): eight rooms, seven keys and an empty hook, a Three.js porch
+with a static SVG fallback, Lenis and ScrollTrigger on the porch only, procedural Web Audio,
+a keyring HUD, localStorage progress, the no-JS document rendered from one copy source, axe
+and copy gates, proof and play-through scripts. Five-role team (creative director, UX, UI,
+accessibility, developer) briefed in parallel from one dossier, then reviewed the real build.
+
+**What worked:**
+- One copy source (`src/content/copy.js`) feeding both the static document and the
+  interactive rooms, with `scripts/lint-copy.mjs` as the voice and Fair Housing gate. Zero
+  em dashes shipped without anyone proofreading for them.
+- Briefing four specialists in parallel from one written dossier, then having the same
+  roles critique rendered frames, not code. The creative director's second pass found what
+  no gate measures: a quoted default interest rate, a finale that read as a footer icon row,
+  cards that lost their word when flipped.
+- A scripted play-through (`scripts/play.mjs`) that earns every key. It caught the HUD
+  button sitting under page content (`display: contents` dropped the nav's z-index), which
+  axe and the rest-frame proof both passed.
+
+**What did not:**
+- The mascot photos could not be fetched: the sandbox egress policy denies the brokerage's
+  host (403 on CONNECT) even though Firecrawl could read the page. Drawn linework portraits
+  hold the frames; the four files are listed in `site/README.md` for Denise to drop in.
+- Headless Chromium did not trust the proxy CA, so the first proof frames rendered in
+  fallback fonts and typography could not be judged. Fixed in the harness only
+  (`ignoreHTTPSErrors` for the proof browser); the policy still applies.
+- SVG `font-size` in CSS px overrode viewBox-unit attribute sizes and blew the map up to
+  unreadable; and a label split into two spans (`display:none` plus `aria-hidden`) silently
+  removed the Skip link's accessible name at phone width. axe caught the second; only a
+  rendered frame caught the first.
+
+**The one change:** every visual change ships with the frame that proves it. The proof and
+play scripts take a side `OUT_DIR` so reviewers' preview servers are never rebuilt under
+them, and the creative director reviews frames before the accessibility auditor runs.
