@@ -15,7 +15,7 @@ export function initBackyard() {
   if (!host) return;
   const flipped = new Set();
   const presses = { rico: 0, cheeto: 0 };
-  const grid = h('div', { class: 'pets' });
+  const grid = h('div', { class: 'pets', role: 'group', 'aria-labelledby': 'backyard-h3', 'aria-describedby': 'backyard-instruction' });
   PETS.forEach((p, i) => {
     let side = 'real';
     const img = h('img', { src: p.img.real, alt: p.altReal, width: 480, height: 600, loading: 'lazy', decoding: 'async' });
@@ -35,14 +35,19 @@ export function initBackyard() {
     const frame = h('div', { class: 'pet-frame' }, img, portrait, plaque);
     const sideLabel = h('span', { class: 'pet-side', text: PET_SIDES.real });
     const caption = h('div', { class: 'pet-caption' }, h('strong', { text: p.name }), sideLabel);
-    const btn = h('button', { class: 'polaroid-btn', type: 'button', 'aria-pressed': 'false', style: { '--tilt': `${i === 0 ? -1.5 : 1.2}deg` }, 'aria-label': `${p.name}, ${PET_SIDES.real.toLowerCase()}. Press to see ${PET_SIDES.work.toLowerCase()}.` }, frame, caption);
+    const flipHint = h('span', { class: 'sr-only', text: ` Press to see ${PET_SIDES.work.toLowerCase()}.` });
+    const btn = h('button', { class: 'polaroid-btn', type: 'button', 'aria-pressed': 'false', style: { '--tilt': `${i === 0 ? -1.5 : 1.2}deg` } }, frame, caption, flipHint);
+    caption.setAttribute('aria-hidden', 'true');
+    portrait.setAttribute('role', 'img');
+    portrait.setAttribute('aria-label', p.altReal);
     const line = h('p', { class: 'pet-line', text: p.real });
     const text = h('div', { class: 'pet-text' }, h('p', { class: 'pet-name', text: p.name }), h('p', { class: 'pet-species', text: `${p.species}, ${p.title}` }), line);
     btn.addEventListener('click', () => {
       side = side === 'real' ? 'work' : 'real';
       const work = side === 'work';
       btn.setAttribute('aria-pressed', work ? 'true' : 'false');
-      btn.setAttribute('aria-label', `${p.name}, ${PET_SIDES[side].toLowerCase()}. Press to see ${PET_SIDES[work ? 'real' : 'work'].toLowerCase()}.`);
+      flipHint.textContent = ` Press to see ${PET_SIDES[work ? 'real' : 'work'].toLowerCase()}.`;
+      portrait.setAttribute('aria-label', work ? p.altWork : p.altReal);
       portrait.innerHTML = petPortrait(p.id, side);
       missing = false;
       img.hidden = false;
@@ -68,7 +73,7 @@ export function initBackyard() {
     });
     grid.append(h('div', { class: 'pet' }, btn, text));
   });
-  host.replaceWith(h('div', { 'data-pets': '' }, h('p', { class: 'instruction', text: room.instruction }), grid));
+  host.replaceWith(h('div', { 'data-pets': '' }, h('h3', { class: 'sr-only', id: 'backyard-h3', text: 'Meet the supervisors' }), h('p', { class: 'instruction', id: 'backyard-instruction', text: room.instruction }), grid));
   store.on('reset', () => {
     flipped.clear();
     presses.rico = 0;

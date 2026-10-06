@@ -51,7 +51,7 @@ export const ROOMS = [
   {
     id: 'front-hall', num: 2, title: 'The Front Hall', key: 'hall', verb: 'Choose',
     eyebrow: 'Room two',
-    intro: 'Hi, I’m Denise. Broker, Realtor, Houston girl, Aggie, IT before this. My girls come first. A cat and a lizard run the office. I’m not your usual Realtor, and I’d rather show you than tell you.',
+    intro: 'Hi, I’m Denise. Broker, Realtor®, Houston girl, Aggie, IT before this. My girls come first. A cat and a lizard run the office. I’m not your usual Realtor, and I’d rather show you than tell you.',
     question: 'What brought you by tonight?',
     toast: 'Hall Key. Now the house knows why you came.',
     next: 'lab',
@@ -146,7 +146,7 @@ export const LAB = {
 
 export const EVIDENCE = {
   listing: [
-    'Charming ', { word: 'cozy', meaning: 'Small. Bring a tape measure.' }, ' 3/2 on a quiet cul-de-sac. ',
+    'Charming ', { word: 'cozy', meaning: 'Small. Bring a tape measure.' }, ' 3/2 on a cul-de-sac. ',
     { word: 'Needs TLC', meaning: 'Needs a contractor.' }, ' but priced to move. ',
     { word: 'Motivated seller', meaning: 'Price is a conversation. Bring an offer.' }, '! ',
     { word: 'Investor special', meaning: 'Bring a flashlight.' }, ' with a ',
@@ -244,7 +244,7 @@ export const ANNOUNCE = {
 export const FALLBACK = {
   noWebGL: 'The fireflies took the night off. The house is still open. Come on in.',
   calm: 'Same house, fewer fireflies.',
-  audioBlocked: 'Your browser kept the crickets quiet. Tap the speaker when you want them.',
+  audioBlocked: 'Your browser held the crickets back. Tap the speaker when you want them.',
 };
 
 export const CLOSING = {

@@ -3,6 +3,13 @@
 // room in place. Crawlers, reader modes and visitors without JS get the whole tour as a document.
 import { SITE, CONTACT, ROOMS, MOVES, LAB, EVIDENCE, LIBRARY, TOWNS, OFF_MAP, FIELD_NOTE, PETS, PET_SIDES, CLOSING, FOOTER, usd } from './copy.js';
 import { porchStaticSVG } from '../scenes/porch-static.js';
+import { petPortrait } from '../ui/pets.js';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+
+const PUBLIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../public');
+const hasFile = (rel) => existsSync(resolve(PUBLIC, rel));
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const room = (id) => ROOMS.find((r) => r.id === id);
@@ -97,7 +104,7 @@ export function renderBackyard() {
     <div class="pets-static" data-pets>
       ${PETS.map((p) => `
       <figure class="pet-static">
-        <img src="${p.img.real}" alt="${esc(p.altReal)}" width="480" height="600" loading="lazy" decoding="async">
+        ${hasFile(p.img.real) ? `<img src="${p.img.real}" alt="${esc(p.altReal)}" width="480" height="600" loading="lazy" decoding="async">` : `<div class="pet-static-portrait" role="img" aria-label="${esc(p.altReal)}">${petPortrait(p.id, 'real')}</div>`}
         <figcaption><strong>${esc(p.name)}</strong>, ${esc(p.species.toLowerCase())}, ${esc(p.title)}. ${esc(PET_SIDES.real)}: ${esc(p.real)} ${esc(PET_SIDES.work)}: ${esc(p.advice)}</figcaption>
       </figure>`).join('')}
     </div>`;

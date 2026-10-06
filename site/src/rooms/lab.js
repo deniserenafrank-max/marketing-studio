@@ -4,6 +4,7 @@ import { h, qs, qsa, formatUSD, clamp } from '../core/dom.js';
 import { store } from '../core/store.js';
 import { audio } from '../core/audio.js';
 import { icon } from '../ui/icons.js';
+import { announce } from '../core/announce.js';
 import { LAB, MOVES, ROOMS } from '../content/copy.js';
 
 const room = ROOMS.find((r) => r.id === 'lab');
@@ -44,7 +45,7 @@ export function initLab() {
   const inputs = {};
   for (const s of LAB.sliders) {
     const id = `lab-${s.id}`;
-    const out = h('output', { for: id, id: `${id}-out` });
+    const out = h('output', { for: id, id: `${id}-out`, 'aria-live': 'off' });
     const input = h('input', { type: 'range', id, min: s.min, max: s.max, step: s.step, value: values[s.id], 'aria-describedby': s.hint ? `${id}-hint` : null });
     const wrap = h('div', { class: 'slider' }, h('label', { for: id, text: s.label }), out, input, s.hint ? h('span', { class: 'hint', id: `${id}-hint`, text: s.hint }) : null);
     const render = () => {
@@ -71,21 +72,24 @@ export function initLab() {
     sliders.append(wrap);
   }
   const renderAll = () => Object.values(inputs).forEach((i) => i.__render());
-  const run = h('button', { class: 'btn btn-primary', type: 'button' }, h('span', { html: icon('beaker') }), LAB.run);
-  const runHint = h('span', { class: 'instruction', role: 'status', text: room.instruction });
-  const runWrap = h('div', { class: 'lab-run' }, run, runHint);
+  const run = h('button', { class: 'btn btn-primary', type: 'button', 'aria-describedby': 'lab-disclaimer' }, h('span', { html: icon('beaker') }), LAB.run);
+  const runHint = h('span', { class: 'instruction', role: 'status', id: 'lab-instruction', text: room.instruction });
+  const runWrap = h('div', { class: 'lab-run' }, run);
+  sliders.setAttribute('role', 'group');
+  sliders.setAttribute('aria-label', 'Your numbers');
+  sliders.setAttribute('aria-describedby', 'lab-instruction');
 
-  const bench = h('div', { class: 'lab-bench', 'aria-describedby': 'lab-disclaimer' });
+  const bench = h('div', { class: 'lab-bench', role: 'group', 'aria-label': 'Results', 'aria-describedby': 'lab-disclaimer' });
   const own = h('div', { class: 'beaker beaker-own' }, h('div', { html: beakerSVG('', 'beaker-clip-own') }), h('div', { class: 'beaker-amount num', 'data-own': '', text: '$ ?' }), h('div', { class: 'beaker-label', text: `${LAB.ownLabel}, ${LAB.perMonth}` }));
   const rent = h('div', { class: 'beaker beaker-rent' }, h('div', { html: beakerSVG('', 'beaker-clip-rent') }), h('div', { class: 'beaker-amount num', 'data-rent': '', text: '$ ?' }), h('div', { class: 'beaker-label', text: `${LAB.rentLabel}, per month` }));
   const beakers = h('div', { class: 'beakers' }, own, rent);
   const lines = h('ul', { class: 'lab-lines', 'aria-label': 'Monthly cost of owning, line by line' });
-  const verdict = h('p', { class: 'lab-verdict', role: 'status', 'aria-live': 'off' });
+  const verdict = h('p', { class: 'lab-verdict' });
   const notYet = h('div', { class: 'lab-notyet', hidden: true }, h('p', { text: room.notYet }), h('p', { class: 'fine', text: room.creditNote }));
   const plaque = h('p', { class: 'lab-plaque', id: 'lab-disclaimer', text: room.disclaimer });
   bench.append(beakers, lines, verdict, notYet, plaque);
 
-  const lab = h('div', { class: 'lab' }, h('div', {}, sliders, runWrap), bench);
+  const lab = h('div', { class: 'lab' }, h('div', {}, runHint, sliders, runWrap), bench);
   host.replaceWith(h('div', { class: 'lab-wrap', 'data-lab': '' }, heading, lab));
 
   let ran = Boolean(store.hasKey('lab'));
@@ -125,9 +129,9 @@ export function initLab() {
       return;
     }
     runHint.textContent = room.instruction;
-    verdict.setAttribute('aria-live', 'polite');
     const result = compute(values);
     const diff = fill(result, true);
+    announce(verdict.textContent);
     ran = true;
     store.answer('lab', { ...values });
     audio.play('pop');
@@ -151,7 +155,6 @@ export function initLab() {
     renderAll();
     lines.innerHTML = '';
     verdict.textContent = '';
-    verdict.setAttribute('aria-live', 'off');
     notYet.hidden = true;
     qs('[data-own]', own).textContent = '$ ?';
     qs('[data-rent]', rent).textContent = '$ ?';

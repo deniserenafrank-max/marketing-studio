@@ -6,7 +6,7 @@ import * as copy from '../src/content/copy.js';
 const BANNED = [
   /—|–/, // em and en dashes
   /\bfamily[- ]friendly\b/i, /\bperfect for (families|couples|singles|professionals|retirees|empty nesters)\b/i, /\bideal for\b/i, /\bbachelor pad\b/i,
-  /\bsafe (neighborhood|area|street)\b/i, /\blow crime\b/i, /\bquiet neighborhood\b/i, /\bdesirable area\b/i,
+  /\bsafe (neighborhood|area|street)\b/i, /\blow crime\b/i, /\bquiet\b/i, /\bdesirable area\b/i,
   /\b(good|great|top|best) schools?\b/i, /\bfor your kids\b/i,
   /\bexclusive\b/i, /\bupscale neighbors\b/i, /\bpeople like you\b/i,
   /\bchurch(es)?\b/i, /\bethnic\b/i, /\bdiverse (area|neighborhood)\b/i,

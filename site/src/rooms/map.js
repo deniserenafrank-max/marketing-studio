@@ -26,11 +26,11 @@ export function initMap() {
     c.addEventListener('click', () => pick(t.id));
     return c;
   });
-  const group = h('div', { class: 'towns', role: 'radiogroup', 'aria-label': 'Pick your town' }, ...chips);
+  const group = h('div', { class: 'towns', role: 'radiogroup', 'aria-labelledby': 'map-h3', 'aria-describedby': 'map-instruction' }, ...chips);
   const off = h('button', { class: 'chip-sm', type: 'button', text: `Not on the map: ${OFF_MAP.name}` });
   off.addEventListener('click', () => whoop());
-  const note = h('div', { class: 'field-note', role: 'region', 'aria-live': 'polite', 'aria-label': 'Field note' });
-  const side = h('div', {}, h('p', { class: 'instruction', text: room.instruction }), group, h('p', { class: 'fine', style: { marginTop: '10px' } }, off), note);
+  const note = h('div', { class: 'field-note', role: 'region', 'aria-label': 'Field note' });
+  const side = h('div', {}, h('h3', { class: 'sr-only', id: 'map-h3', text: 'Pick your town' }), h('p', { class: 'instruction', id: 'map-instruction', text: room.instruction }), group, h('p', { class: 'fine', style: { marginTop: '10px' } }, off), note);
   host.replaceWith(h('div', { class: 'maproom', 'data-map': '' }, map, side));
 
   qsa('.map-pin', map).forEach((pin) => {
@@ -68,6 +68,7 @@ export function initMap() {
     store.answer('towns', [...visited]);
     audio.play('pin');
     sync();
+    announce(FIELD_NOTE.title(TOWNS.find((t) => t.id === id).name));
     store.earnKey('map');
     if (visited.size === TOWNS.length) store.unlock('local');
   }

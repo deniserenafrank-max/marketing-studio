@@ -13,6 +13,10 @@ import { goTo } from '../core/scroll.js';
 
 let dialog = null;
 let lastRoomBeforeSkip = null;
+let currentRoom = null;
+document.addEventListener('room:enter', (e) => {
+  currentRoom = e.detail;
+});
 
 export function renderKeys(container, { size = 18, glow = false } = {}) {
   const state = store.get();
@@ -30,19 +34,18 @@ function updateCount() {
   if (ring) ring.setAttribute('aria-label', `${HUD.menu}. ${HUD.progress(n, TOTAL_KEYS)}`);
 }
 
-function toggleButton(btn, { on, iconOn, iconOff, labelOn, labelOff, slot, label }) {
+function toggleButton(btn, { on, iconOn, iconOff, slot }) {
+  // Stable name ("Sound", "Calm mode"); aria-pressed carries the state.
   btn.setAttribute('aria-pressed', on ? 'true' : 'false');
   const s = qs(slot, btn);
   if (s) s.innerHTML = icon(on ? iconOn : iconOff);
-  const l = qs(label, btn);
-  if (l) l.textContent = on ? labelOn : labelOff;
 }
 
 function syncToggles() {
   const soundBtn = qs('[data-toggle-sound]');
   const motionBtn = qs('[data-toggle-motion]');
-  if (soundBtn) toggleButton(soundBtn, { on: audio.enabled, iconOn: 'soundOn', iconOff: 'soundOff', labelOn: HUD.soundOn, labelOff: HUD.soundOff, slot: '[data-ico-sound]', label: '[data-sound-label]' });
-  if (motionBtn) toggleButton(motionBtn, { on: reducedMotion(), iconOn: 'motionOff', iconOff: 'motionOn', labelOn: HUD.calmOn, labelOff: HUD.calmOff, slot: '[data-ico-motion]', label: '[data-motion-label]' });
+  if (soundBtn) toggleButton(soundBtn, { on: audio.enabled, iconOn: 'soundOn', iconOff: 'soundOff', slot: '[data-ico-sound]' });
+  if (motionBtn) toggleButton(motionBtn, { on: reducedMotion(), iconOn: 'motionOff', iconOff: 'motionOn', slot: '[data-ico-motion]' });
 }
 
 function buildDialog() {
@@ -144,7 +147,7 @@ export function initHud() {
 
   qs('[data-hud-open]')?.addEventListener('click', (e) => {
     const d = buildDialog();
-    const current = qsa('.room.is-lit').at(-1)?.dataset.chapter || null;
+    const current = currentRoom || qsa('.room.is-lit').at(-1)?.dataset.chapter || null;
     fillDialog(current);
     e.currentTarget.setAttribute('aria-expanded', 'true');
     d.showModal();

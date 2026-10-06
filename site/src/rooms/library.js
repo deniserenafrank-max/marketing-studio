@@ -13,7 +13,7 @@ export function initLibrary() {
   const host = qs('[data-library]', section);
   if (!host) return;
   const flipped = new Set(store.get().answers.library || []);
-  const shelf = h('div', { class: 'shelf', role: 'group', 'aria-label': 'Word of the day cards' });
+  const shelf = h('div', { class: 'shelf', role: 'group', 'aria-labelledby': 'library-h3' });
   LIBRARY.forEach((w, i) => {
     const defId = `def-${w.id}`;
     const back = h('div', { class: 'flip-face flip-back', id: defId }, h('p', { class: 'flip-term', text: w.word }), h('p', { class: 'flip-def', text: w.def }), h('p', { class: 'flip-gloss', text: w.gloss }));
@@ -46,7 +46,7 @@ export function initLibrary() {
     if (flipped.has(w.id)) wrap.classList.add('is-earned');
     shelf.append(wrap);
   });
-  host.replaceWith(h('div', { 'data-library': '' }, room.instruction ? h('p', { class: 'instruction', text: room.instruction }) : null, shelf));
+  host.replaceWith(h('div', { 'data-library': '' }, h('h3', { class: 'sr-only', id: 'library-h3', text: 'Word of the day' }), room.instruction ? h('p', { class: 'instruction', text: room.instruction }) : null, shelf));
   store.on('reset', () => {
     flipped.clear();
     qsa('.flip', shelf).forEach((f) => f.classList.remove('is-earned'));

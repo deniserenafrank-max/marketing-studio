@@ -18,8 +18,9 @@ export function initEvidence() {
   const found = new Set();
   let misses = 0;
 
-  const listing = h('p', { class: 'listing', role: 'group', 'aria-label': 'The listing. Each word is a button.' });
+  const listing = h('p', { class: 'listing', role: 'group', 'aria-label': 'The listing. Words that could hide something are buttons.' });
   const words = [];
+  const STOP = new Set(['a', 'an', 'on', 'to', 'but', 'with', 'the', 'and', 'of']);
   for (const part of EVIDENCE.listing) {
     if (typeof part === 'string') {
       const tokens = part.split(/(\s+)/);
@@ -27,6 +28,11 @@ export function initEvidence() {
         if (!t) continue;
         if (/^\s+$/.test(t)) {
           listing.append(' ');
+          continue;
+        }
+        const core = t.replace(/[^\p{L}\p{N}/-]/gu, '');
+        if (core.length < 3 || STOP.has(core.toLowerCase())) {
+          listing.append(t);
           continue;
         }
         const b = h('button', { class: 'word', type: 'button', 'aria-pressed': 'false', text: t });
@@ -51,7 +57,7 @@ export function initEvidence() {
   const twine = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   twine.setAttribute('class', 'board-twine');
   twine.setAttribute('aria-hidden', 'true');
-  const inner = h('div', { class: 'board-inner' }, h('div', {}, card, count, status), polaroids);
+  const inner = h('div', { class: 'board-inner' }, h('div', {}, h('h3', { class: 'sr-only', text: 'Spot the euphemism' }), card, count, status), polaroids);
   const board = h('div', { class: 'board' }, twine, inner);
   host.replaceWith(h('div', { 'data-evidence': '' }, room.instruction ? h('p', { class: 'instruction', text: room.instruction }) : null, board));
 
